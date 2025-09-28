@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محمّل الفيديوهات - تحميل من جميع المنصات</title>
+    
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Arabic font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS file -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Custom styles -->
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .gradient-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .platform-card {
+            transition: all 0.3s ease;
+        }
+        
+        .platform-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .download-btn {
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(45deg, #f5576c 0%, #f093fb 100%);
+            transform: scale(1.05);
+        }
+        
+        .quality-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .quality-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .quality-btn.selected {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="text-center py-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 slide-in">
+                <i class="fas fa-download mr-4 text-yellow-300"></i>
+                محمّل الفيديوهات
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-100 slide-in">
+                حمّل الفيديوهات من جميع المنصات بجودة عالية
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pb-12">
+        <!-- Platform Selection -->
+        <section class="mb-12 slide-in">
+            <h2 class="text-2xl md:text-3xl font-bold text-white text-center mb-8">
+                اختر المنصة
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <!-- YouTube -->
+                <div class="platform-card gradient-card rounded-2xl p-6 text-center cursor-pointer" data-platform="youtube">
+                    <i class="fab fa-youtube text-red-500 text-4xl mb-4"></i>
+                    <h3 class="text-white font-semibold">يوتيوب</h3>
+                </div>
+                
+                <!-- Instagram -->
+                <div class="platform-card gradient-card rounded-2xl p-6 text-center cursor-pointer" data-platform="instagram">
+                    <i class="fab fa-instagram text-pink-500 text-4xl mb-4"></i>
+                    <h3 class="text-white font-semibold">انستقرام</h3>
+                </div>
+                
+                <!-- TikTok -->
+                <div class="platform-card gradient-card rounded-2xl p-6 text-center cursor-pointer" data-platform="tiktok">
+                    <i class="fab fa-tiktok text-black text-4xl mb-4"></i>
+                    <h3 class="text-white font-semibold">تيك توك</h3>
+                </div>
+                
+                <!-- Facebook -->
+                <div class="platform-card gradient-card rounded-2xl p-6 text-center cursor-pointer" data-platform="facebook">
+                    <i class="fab fa-facebook text-blue-500 text-4xl mb-4"></i>
+                    <h3 class="text-white font-semibold">فيس بوك</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- URL Input Section -->
+        <section class="max-w-4xl mx-auto mb-12">
+            <div class="gradient-card rounded-2xl p-8">
+                <h2 class="text-2xl font-bold text-white text-center mb-6">
+                    أدخل رابط الفيديو
+                </h2>
+                
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <input 
+                            type="url" 
+                            id="videoUrl" 
+                            placeholder="الصق رابط الفيديو هنا..."
+                            class="w-full px-6 py-4 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:outline-none text-lg transition-all duration-300"
+                            dir="ltr"
+                        >
+                    </div>
+                    <button 
+                        id="analyzeBtn" 
+                        class="download-btn text-white px-8 py-4 rounded-xl font-semibold text-lg min-w-[150px] flex items-center justify-center gap-2"
+                    >
+                        <i class="fas fa-search"></i>
+                        تحليل الرابط
+                    </button>
+                </div>
+                
+                <!-- Selected Platform Display -->
+                <div id="selectedPlatform" class="mt-4 text-center text-white text-lg hidden">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span>المنصة المختارة: </span>
+                    <span id="platformName" class="font-bold"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quality Selection -->
+        <section id="qualitySection" class="max-w-4xl mx-auto mb-12 hidden">
+            <div class="gradient-card rounded-2xl p-8">
+                <h2 class="text-2xl font-bold text-white text-center mb-6">
+                    اختر جودة الفيديو
+                </h2>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="quality-btn bg-white text-gray-800 px-6 py-3 rounded-xl font-semibold" data-quality="480p">
+                        480p - جودة عادية
+                    </button>
+                    <button class="quality-btn bg-white text-gray-800 px-6 py-3 rounded-xl font-semibold selected" data-quality="720p">
+                        720p - جودة عالية
+                    </button>
+                    <button class="quality-btn bg-white text-gray-800 px-6 py-3 rounded-xl font-semibold" data-quality="1080p">
+                        1080p - جودة فائقة
+                    </button>
+                </div>
+                
+                <!-- Download Button -->
+                <div class="text-center mt-8">
+                    <button 
+                        id="downloadBtn" 
+                        class="download-btn text-white px-12 py-4 rounded-xl font-bold text-xl flex items-center justify-center gap-3 mx-auto"
+                    >
+                        <i class="fas fa-download"></i>
+                        تحميل الفيديو
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Preview Section -->
+        <section id="previewSection" class="max-w-4xl mx-auto mb-12 hidden">
+            <div class="gradient-card rounded-2xl p-8">
+                <h2 class="text-2xl font-bold text-white text-center mb-6">
+                    معاينة الفيديو
+                </h2>
+                
+                <div class="aspect-video bg-black rounded-xl overflow-hidden">
+                    <video id="previewVideo" class="w-full h-full" controls>
+                        <source src="" type="video/mp4">
+                        المتصفح لا يدعم تشغيل الفيديو
+                    </video>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <p class="text-white text-lg">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        جاهز للتحميل بجودة <span id="selectedQuality" class="font-bold">720p</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Section -->
+        <section id="loadingSection" class="max-w-4xl mx-auto mb-12 hidden">
+            <div class="gradient-card rounded-2xl p-8 text-center">
+                <div class="loading-spinner text-6xl text-white mb-4">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-2">جاري المعالجة...</h2>
+                <p class="text-gray-200">يرجى الانتظار بينما نقوم بتحضير الفيديو للتحميل</p>
+                
+                <div class="mt-6">
+                    <div class="w-full bg-gray-300 rounded-full h-2">
+                        <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <p class="text-white mt-2"><span id="progressText">0</span>% مكتمل</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="max-w-6xl mx-auto mb-12">
+            <h2 class="text-3xl font-bold text-white text-center mb-8">
+                مميزات الخدمة
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="gradient-card rounded-2xl p-6 text-center slide-in">
+                    <i class="fas fa-bolt text-yellow-400 text-4xl mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">سرعة فائقة</h3>
+                    <p class="text-gray-200">تحميل سريع وآمن للفيديوهات</p>
+                </div>
+                
+                <div class="gradient-card rounded-2xl p-6 text-center slide-in">
+                    <i class="fas fa-hd-video text-green-400 text-4xl mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">جودة عالية</h3>
+                    <p class="text-gray-200">دعم جودات متعددة حتى 1080p</p>
+                </div>
+                
+                <div class="gradient-card rounded-2xl p-6 text-center slide-in">
+                    <i class="fas fa-shield-alt text-blue-400 text-4xl mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">آمن ومجاني</h3>
+                    <p class="text-gray-200">بدون إعلانات أو برمجيات خبيثة</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-white border-opacity-20">
+        <div class="container mx-auto px-4">
+            <p class="text-white text-lg">
+                © 2024 محمّل الفيديوهات - جميع الحقوق محفوظة
+            </p>
+            <p class="text-gray-300 mt-2">
+                خدمة مجانية لتحميل الفيديوهات من جميع المنصات
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>
