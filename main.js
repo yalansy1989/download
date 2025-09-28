@@ -1,10 +1,12 @@
 // Video Downloader App - Main JavaScript File
+
 class VideoDownloader {
     constructor() {
         this.selectedPlatform = null;
         this.selectedQuality = '720p';
         this.currentVideoUrl = null;
-        this.apiBase = "https://yalansy1989-video-downloader-backen.vercel.app/api"; // 🔥 رابط السيرفر مع /api
+        // رابط السيرفر الجديد
+        this.apiBase = "https://yalansy1989-video-downloader-backen.vercel.app/api";
         this.init();
     }
 
@@ -31,6 +33,7 @@ class VideoDownloader {
         });
         
         analyzeBtn.addEventListener('click', () => this.analyzeUrl());
+
         document.getElementById('downloadBtn').addEventListener('click', () => this.downloadVideo());
 
         document.addEventListener('keydown', (e) => {
@@ -243,5 +246,3 @@ document.addEventListener('DOMContentLoaded', () => {
     new VideoDownloader();
     console.log('🎬 محمّل الفيديوهات - تم تحميل التطبيق بنجاح!');
 });
-
-
