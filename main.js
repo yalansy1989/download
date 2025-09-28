@@ -190,7 +190,8 @@ class VideoDownloader {
             return;
         }
 
-        const apiBase = "https://dawonload-video-ai-pjsi.vercel.app";
+        const apiBase = "https://video-downloader-backend-bu65.vercel.app
+";
 
         let endpoint = "";
         if (this.selectedPlatform === "youtube") endpoint = "/youtube";
@@ -311,3 +312,4 @@ function loadFromStorage(key,def=null){try{const item=localStorage.getItem(key);
 function loadUserPreferences(){const p=loadFromStorage('videoDownloaderPrefs',{preferredQuality:'720p',lastUsedPlatform:null,autoDetectPlatform:true});if(p.preferredQuality){const q=document.querySelector(`[data-quality="${p.preferredQuality}"]`);if(q){document.querySelectorAll('.quality-btn').forEach(b=>b.classList.remove('selected'));q.classList.add('selected');}}console.log('تم تحميل إعدادات المستخدم:',p);}
 function saveUserPreferences(key,value){const p=loadFromStorage('videoDownloaderPrefs',{});p[key]=value;saveToStorage('videoDownloaderPrefs',p);}
 if(typeof module!=='undefined'&&module.exports){module.exports=VideoDownloader;}
+
