@@ -4,7 +4,7 @@ class VideoDownloader {
         this.selectedPlatform = null;
         this.selectedQuality = '720p';
         this.currentVideoUrl = null;
-        this.apiBase = "https://yalansy1989-video-downloader-backen.vercel.app"; // 🔥 رابط السيرفر مع /api
+        this.apiBase = "https://yalansy1989-video-downloader-backen.vercel.app/api"; // 🔥 رابط السيرفر مع /api
         this.init();
     }
 
