@@ -246,14 +246,12 @@ class VideoDownloader {
 
 document.addEventListener('DOMContentLoaded', () => {
     new VideoDownloader();
-    // ✅ دالة تحميل الفيديو بعد التعديل
-downloadVideo() {
+  async downloadVideo() {
     if (!this.currentVideoUrl) {
         this.showNotification('لم يتم تحليل أي رابط بعد', 'error');
         return;
     }
 
-    // 🔥 تحديد نقطة النهاية (endpoint) حسب المنصة
     let endpoint = "";
     if (this.selectedPlatform === "youtube") endpoint = "/youtube";
     else if (this.selectedPlatform === "tiktok") endpoint = "/tiktok";
@@ -264,34 +262,38 @@ downloadVideo() {
         return;
     }
 
-    // 🔄 حالة التحميل على الزر
     const downloadBtn = document.getElementById('downloadBtn');
     const originalText = downloadBtn.innerHTML;
     downloadBtn.innerHTML = '<i class="fas fa-spinner loading-spinner"></i> جاري التحميل...';
     downloadBtn.disabled = true;
 
-    // 🌐 استدعاء API
-    fetch(`${this.apiBase}${endpoint}?url=${encodeURIComponent(this.currentVideoUrl)}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success && data.downloadUrl) {
-                // فتح رابط التحميل في نافذة جديدة
-                window.open(data.downloadUrl, "_blank");
-                this.showNotification('تم تجهيز رابط التحميل ✅', 'success');
-            } else {
-                this.showNotification(data.message || 'فشل في الحصول على رابط التحميل', 'error');
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            this.showNotification('فشل الاتصال بالسيرفر ❌', 'error');
-        })
-        .finally(() => {
-            downloadBtn.innerHTML = originalText;
-            downloadBtn.disabled = false;
-        });
+    try {
+        // 🚀 جلب رابط التحميل من السيرفر
+        const response = await fetch(`${this.apiBase}${endpoint}?url=${encodeURIComponent(this.currentVideoUrl)}`);
+        const data = await response.json();
+
+        if (data.success && data.downloadUrl) {
+            this.showNotification('✅ تم تجهيز رابط التحميل', 'success');
+
+            // 👇 إنشاء زر تحميل حقيقي
+            const a = document.createElement('a');
+            a.href = data.downloadUrl;
+            a.download = "video.mp4"; // اسم الملف
+            a.target = "_blank";
+            a.click();
+        } else {
+            this.showNotification(data.message || 'حدث خطأ أثناء التحميل', 'error');
+        }
+    } catch (error) {
+        this.showNotification('فشل الاتصال بالسيرفر', 'error');
+    }
+
+    downloadBtn.innerHTML = originalText;
+    downloadBtn.disabled = false;
 }
+
 
     console.log('🎬 محمّل الفيديوهات - تم تحميل التطبيق بنجاح!');
 });
+
 
