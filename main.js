@@ -5,8 +5,7 @@ class VideoDownloader {
         this.selectedPlatform = null;
         this.selectedQuality = '720p';
         this.currentVideoUrl = null;
-        // رابط السيرفر الجديد
-        this.apiBase = "https://yalansy1989-video-downloader-backen.vercel.app/api";
+        this.apiBase = "https://yalansy1989-video-downloader-backen.vercel.app/api"; // 🔥 رابط السيرفر
         this.init();
     }
 
@@ -181,7 +180,7 @@ class VideoDownloader {
         video.poster = 'https://via.placeholder.com/640x360/1e293b/ffffff?text=معاينة+الفيديو';
     }
 
-    async downloadVideo() {
+    downloadVideo() {
         if (!this.currentVideoUrl) {
             this.showNotification('لم يتم تحليل أي رابط بعد', 'error');
             return;
@@ -202,23 +201,24 @@ class VideoDownloader {
         downloadBtn.innerHTML = '<i class="fas fa-spinner loading-spinner"></i> جاري التحميل...';
         downloadBtn.disabled = true;
 
-        try {
-            const response = await fetch(`${this.apiBase}${endpoint}?url=${encodeURIComponent(this.currentVideoUrl)}`);
-            const data = await response.json();
+        const finalUrl = `${this.apiBase}${endpoint}?url=${encodeURIComponent(this.currentVideoUrl)}`;
 
-            if (data.success && data.downloadUrl) {
-                window.open(data.downloadUrl, "_blank");
-                this.showNotification('✅ تم تجهيز رابط التحميل بنجاح', 'success');
-            } else {
-                this.showNotification(data.message || 'حدث خطأ أثناء التحميل', 'error');
-            }
-        } catch (err) {
-            console.error(err);
-            this.showNotification('⚠️ فشل الاتصال بالسيرفر', 'error');
-        }
-
-        downloadBtn.innerHTML = originalText;
-        downloadBtn.disabled = false;
+        fetch(finalUrl)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.downloadUrl) {
+                    window.open(data.downloadUrl, "_blank");
+                } else {
+                    this.showNotification(data.message || 'حدث خطأ في إنشاء رابط التحميل', 'error');
+                }
+            })
+            .catch(() => {
+                this.showNotification('فشل الاتصال بالسيرفر', 'error');
+            })
+            .finally(() => {
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+            });
     }
 
     showNotification(message, type = 'info') {
@@ -238,7 +238,9 @@ class VideoDownloader {
             </div>
         `;
         document.body.appendChild(notification);
-        setTimeout(() => { if (notification.parentElement) notification.remove(); }, 5000);
+        setTimeout(() => {
+            if (notification.parentElement) notification.remove();
+        }, 5000);
     }
 }
 
